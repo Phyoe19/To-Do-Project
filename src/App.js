@@ -46,19 +46,70 @@ function App() {
       });
     })
   }
+
+  let  updateTodo = (todo) => {
+    //server updatw todo
+    fetch(`http://localhost:3001/todos/${todo.id}`, {
+      method : "PATCH",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body : JSON.stringify(todo)
+    })
+    //client update todo
+    setTodos(prevState => {
+      return prevState.map(t => {
+        if(t.id == todo.id) {
+          return todo
+        }
+
+        return t;
+      });
+    })
+  }
+
+  let checkAll = () => {
+    //server
+    todos.forEach(t => {
+      t.completed = true;
+      updateTodo(t);
+    })
+    //client
+    setTodos((prevState) => {
+      return prevState.map(t => {
+        return {...t,completed : true};
+
+      })
+    })
+  }
+
+  let clearCompleted = () => {
+    //server
+    todos.forEach(t => {
+      if(t.completed){
+        deleteTodo(t.id)
+      }  
+    })
+    //client
+    setTodos((prevState) => {
+      return prevState.filter(t => !t.completed)
+    })
+  }
+
+  let remainingCount = todos.filter(t => !t.completed).length
   return (
     <div className="todo-app-container">
       <div className="todo-app">
         <h2>Todo App</h2>
         <TodoForm addTodo={addTodo}/>
-        <TodoList todos={todos} deleteTodo={deleteTodo}/>
-        <CheckAllAndRemaining/>
+        <TodoList todos={todos} deleteTodo={deleteTodo} updateTodo={updateTodo}/>
+        <CheckAllAndRemaining remainingCount={remainingCount} checkAll={checkAll}/>
 
         <div className="other-buttons-container">
         <TodoFilters/>
         
 
-          <ClearCompletedBtn/>
+          <ClearCompletedBtn clearCompleted={clearCompleted}/>
           
         </div>
       </div>
@@ -67,4 +118,3 @@ function App() {
 }
 
 export default App;
-
