@@ -2,8 +2,8 @@ import express from "express"
 import dotenv from "dotenv"
 import connectToDB from "./database/db.js"
 import TodoRouter from "./router/TodoRouter.js"
-import UserRouter from "./router/UserRouter.js"
-
+import AuthRouter from "./router/AuthRouter.js"
+import cookieParser from "cookie-parser"
 
 dotenv.config();
 const app = express()
@@ -11,6 +11,7 @@ const app = express()
 
 //middleware
 app.use(express.json())
+app.use(cookieParser())
 
 connectToDB();
 
@@ -20,7 +21,7 @@ app.get('/',async (req, res) => {
 })
 app.use(TodoRouter);
 
-app.use('/user', UserRouter);
+app.use( AuthRouter);
 
 
 app.listen(3000, () => {

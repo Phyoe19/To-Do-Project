@@ -6,21 +6,11 @@ const router = Router();
 
 
 
-// Define routes
-router.get('/todos', TodoController.todo);
+// Define routes and create todo
+router.route('/todos').get(TodoController.todo).post(TodoController.create);
 
-// Create todos
-router.post('/create-todo', TodoController.create);
-
-// Retrieve a todo by ID
-router.get('/:todoId', TodoController.retrieve);
-
-// Update a todo by ID
-router.patch('/:todoId', TodoController.update);
-
-// Delete a todo by ID
-router.delete('/delete/:todoId', TodoController.delete);
-
+// Retrieve,Update and Delete a todo by ID
+router.route("/todos/:todoId").get(TodoController.retrieve).patch(TodoController.update).delete(TodoController.delete);
 
 export default router;
 
