@@ -60,7 +60,7 @@ const TodoController = {
             const result = await Todo.findByIdAndUpdate(todoId, updatedTodo, { new: true,});
             
             res.status(200).json({
-                message: "Retrieved Todo is success",
+                message: "Updated Todo is success",
                 data: result,
     
             })
